@@ -1,7 +1,8 @@
 from django.conf.urls import url
-from . import rest
+from . import rest, gendata
 
 urlpatterns = [
-    url(r'^generate$', rest.generate),
+    url(r'^generate$', gendata.generate),
     url(r'^user$', rest.user),
+    url(r'^film$', rest.film),
 ]

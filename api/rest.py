@@ -1,44 +1,36 @@
 from .models import *
 from datetime import *
-from django.http import HttpResponse
-
-def generate(request):
-    Film.objects.all().delete()
-    Gatunek.objects.all().delete()
-
-    film = Film(
-    nazwa = "Ale jazda!",
-    nazwa_oryginalna = "Intersate 60",
-    czas_trwania = 115,
-    rok_produkcji = 2002,
-    data_premiery = date(2002, 4, 13),
-    data_premiery_polska = date(2003, 1, 26),
-    budzet = 12412412,
-    opis = "Zajebisty film opowiwada o kolesiu co coś tam....",
-    ocena = 5.0,
-    ilosc_ocen = 30)
-    film.save()
-
-    gatunek = Gatunek(nazwa = "Komedia")
-    gatunek.save()
-    gatunek = Gatunek(nazwa = "Dramat")
-    gatunek.save()
-    gatunek = Gatunek(nazwa = "Horror")
-    gatunek.save()
-
-    g1 = Gatunek.objects.filter(nazwa__icontains = "ror").get()
-    g2 = Gatunek.objects.filter(nazwa__icontains = "med").get()
-
-    f = Film.objects.filter(nazwa__icontains =  "jaZdA").get()
-    f.gatunki.add(g1, g2)
-
-
-    return HttpResponse("Wygenerowane przykladowe dane")
-
+from json import *
+from django.views.decorators.csrf import csrf_exempt
+from django.http import HttpResponse, SimpleCookie
+from django.core import serializers
+import json
 
 def user(request):
     print('user')
     pass
+
+
+@csrf_exempt
+def film(request):
+
+    methods = {
+        "GET" : film_get,
+        "POST" : film_post,
+    }
+    method = methods.get(request.method)
+
+    return method(request)
+
+def film_get(request): # Wszystkie filmy
+    filmy = Film.objects.all()
+    filmy_ser = serializers.serialize('json', filmy)
+    data = json.loads(filmy_ser)
+    return HttpResponse(json.dumps(data))
+
+
+def film_post(request):
+    return HttpResponse("KurwaPOST")
 
 # @csrf_exempt
 # def film(request):

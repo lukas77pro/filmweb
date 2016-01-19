@@ -1,0 +1,24 @@
+<!doctype html>
+<html>
+<head>
+    {% load staticfiles %}
+    <script src="{% static 'js/angular/angular.min.js' %}"></script>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/foundation.css' %}">
+</head>
+<body ng-app>
+{% verbatim %}
+<div>
+    <div class="panel">Name:</div>
+    <input type="text" ng-model="yourName" placeholder="Enter a name here">
+    Hello {{yourName}}!
+    <div class="row">
+        <div class="column small-4 button secondary tiny" ng-click="console.log('asda')")>
+            Witam
+        </div>
+
+    </div>
+</div>
+{% endverbatim %}
+</body>
+</html>
+
