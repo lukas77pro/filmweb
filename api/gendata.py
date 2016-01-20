@@ -7,6 +7,16 @@ def generate(request):
     Gatunek.objects.all().delete()
     Kraj.objects.all().delete()
     Osoba.objects.all().delete()
+    Zawod.objects.all().delete()
+
+    # ZAWODY ======================
+    zawod = Zawod(nazwa = "Aktor")
+    zawod.save()
+    zawod = Zawod(nazwa = "Reżyser")
+    zawod.save()
+    zawod = Zawod(nazwa = "Scenarzysta")
+    zawod.save()
+    # ===============================
 
 
     # GATUNKI ======================
@@ -20,6 +30,8 @@ def generate(request):
     gatunek.save()
     gatunek = Gatunek(nazwa = "Sci-Fi")
     gatunek.save()
+    gatunek = Gatunek(nazwa = "Dokument")
+    gatunek.save()
     # ===============================
 
     # KRAJE =========================
@@ -27,15 +39,41 @@ def generate(request):
     kraj.save()
     kraj = Kraj(nazwa = "USA")
     kraj.save()
-    kraj = Kraj(nazwa = "Liban")
-    kraj.save()
-    kraj = Kraj(nazwa = "Australia")
+    kraj = Kraj(nazwa = "Francja")
     kraj.save()
     kraj = Kraj(nazwa = "Austria")
     kraj.save()
-    kraj = Kraj(nazwa = "Francja")
+    kraj = Kraj(nazwa = "Australia")
     kraj.save()
-    kraj = Kraj(nazwa = "Hiszpania")
+    kraj = Kraj(nazwa = "Niemcy")
+    kraj.save()
+    kraj = Kraj(nazwa = "Włochy")
+    kraj.save()
+    kraj = Kraj(nazwa = "Czechy")
+    kraj.save()
+    kraj = Kraj(nazwa = "Słowacja")
+    kraj.save()
+    kraj = Kraj(nazwa = "Rosja")
+    kraj.save()
+    kraj = Kraj(nazwa = "Dania")
+    kraj.save()
+    kraj = Kraj(nazwa = "Grecja")
+    kraj.save()
+    kraj = Kraj(nazwa = "Norwegia")
+    kraj.save()
+    kraj = Kraj(nazwa = "Szwecja")
+    kraj.save()
+    kraj = Kraj(nazwa = "Liban")
+    kraj.save()
+    kraj = Kraj(nazwa = "Iran")
+    kraj.save()
+    kraj = Kraj(nazwa = "Chiny")
+    kraj.save()
+    kraj = Kraj(nazwa = "Japonia")
+    kraj.save()
+    kraj = Kraj(nazwa = "Indie")
+    kraj.save()
+    kraj = Kraj(nazwa = "Kazachstan")
     kraj.save()
     # ===============================
 

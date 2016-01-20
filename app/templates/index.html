@@ -1,22 +1,82 @@
 <!doctype html>
-<html>
+<html ng-app="app">
 <head>
     {% load staticfiles %}
     <script src="{% static 'js/angular/angular.min.js' %}"></script>
+    <script src="{% static 'js/app.js' %}"></script>
     <link rel="stylesheet" type="text/css" href="{% static 'css/foundation.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/app.css' %}">
 </head>
-<body ng-app>
+<body>
 {% verbatim %}
-<div>
-    <div class="panel">Name:</div>
-    <input type="text" ng-model="yourName" placeholder="Enter a name here">
-    Hello {{yourName}}!
+<div ng-controller="controller">
+
     <div class="row">
-        <div class="column small-4 button secondary tiny" ng-click="console.log('asda')")>
-            Witam
+        <div class="column small-10 small-centered">
+            <div class="row">
+                <div class="tytul" ng-click="init()">
+                    FILMWEB
+                </div>
+            </div>
+
+
+            <div ng-show="state=='main'">
+                <div class="row">
+                    <div class="column small-6 left">
+                        <input placeholder="Podaj tytuł filmu..." ng-model="searchfilm.name">
+                    </div>
+                    <div class="column small-2 button left" ng-click="state='filmadd'">
+                        Szukaj filmu
+                    </div>
+                    {{ state }}
+                </div>
+                <div ng-repeat="country in countries">
+                    <div class="row">
+                        <div class="small-4 button">
+                            {{ country }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div ng-show="state=='filmadd'">
+                <form name="filmadd_form">
+                    <div class="row">
+                        <div class="column small-4">
+                            <label for="countrieSelect"> Dodaj kraj: </label>
+                            <select name="countrieSelect" id="countrieSelect">
+                                <option ng-repeat="country in countries" value="1">{{country}}</option>
+                            </select>
+                        </div>
+                        <div class="column small-4">
+
+                            <label for="genreSelect"> Dodaj gatunek: </label>
+                            <select name="genreSelect" id="genreSelect">
+                                <option ng-repeat="genre in genres" value="2">{{genre}}</option>
+                            </select>
+                        </div>
+                        <div class="column small-4">
+                            <label for="professionSelect"> Dodaj zawód: </label>
+                            <select name="professionSelect" id="professionSelect">
+                                <option disabled selected> -- select an option --</option>
+                                <option ng-repeat="profession in professions" value="3">{{profession}}</option>
+                            </select>
+                        </div>
+                    </div>
+            </div>
+            </form>
+
         </div>
 
+        <div ng-show="state=='filmview'">
+            witam
+        </div>
+
+        <div ng-show="state=='filmedit'">
+            witam
+        </div>
     </div>
+</div>
 </div>
 {% endverbatim %}
 </body>

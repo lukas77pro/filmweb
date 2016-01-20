@@ -32,6 +32,26 @@ def film_get(request): # Wszystkie filmy
 def film_post(request):
     return HttpResponse("KurwaPOST")
 
+
+
+def countries(request):
+    kraje = Kraj.objects.all()
+    kraje_ser = serializers.serialize('json', kraje)
+    data = json.loads(kraje_ser)
+    return HttpResponse(json.dumps(data))
+
+def genres(request):
+    gatunek = Gatunek.objects.all()
+    gatunek_ser = serializers.serialize('json', gatunek)
+    data = json.loads(gatunek_ser)
+    return HttpResponse(json.dumps(data))
+
+def professions(request):
+    zawod = Zawod.objects.all()
+    zawod_ser = serializers.serialize('json', zawod)
+    data = json.loads(zawod_ser)
+    return HttpResponse(json.dumps(data))
+
 # @csrf_exempt
 # def film(request):
 #     if request.method == 'POST':
