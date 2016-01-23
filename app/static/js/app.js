@@ -5,8 +5,8 @@ app.controller('controller', ['$scope', '$http', function($scope, $http) {
     var createFilm = function() {
         return {
             id : null,
-            nazwa : null,
-            nazwa_oryginalna : null,
+            nazwa : '',
+            nazwa_oryginalna : '',
             czas_trwania : null,
             rok_produkcji : null,
             data_premiery : null,
@@ -55,6 +55,7 @@ app.controller('controller', ['$scope', '$http', function($scope, $http) {
         if (gatunki.indexOf(szukany) == -1) {
             gatunki.push(szukany)
         }
+        $scope.items.genre = ''
     };
     $scope.deleteGenreFromNewFilm = function(index) {
         $scope.nowyFilm.gatunki.splice(index, 1)
@@ -68,19 +69,31 @@ app.controller('controller', ['$scope', '$http', function($scope, $http) {
         if (kraje.indexOf(szukany) == -1) {
             kraje.push(szukany)
         }
+        $scope.items.country = ''
     };
     $scope.deleteCountryFromNewFilm = function(index) {
         $scope.nowyFilm.produkcja.splice(index, 1)
     };
 
+    $scope.validAddFilmForm = function() {
+        if ($scope.nowyFilm.gatunki.length > 0 &&
+            $scope.nowyFilm.produkcja.length > 0) {
+            return true
+        }
+        return false
+    };
+
     $scope.pushFilm = function() {
-        console.log('send')
-    }
+        if ($scope.validAddFilmForm()) {
+            console.log('VALID')
+        }
+
+    };
 
 
     $scope.info = function(arg) {
         console.log(arg)
-    }
+    };
     // ===============================
 
     $scope.loadCountries = function() {
@@ -147,10 +160,10 @@ app.controller('controller', ['$scope', '$http', function($scope, $http) {
     $scope.init = function() {
         $scope.loadData();
         $scope.state = "main"
-        $scope.searchfilm = {
+        /*$scope.searchfilm = {
             name : '',
             films : []
-        }
+        }*/
     };
     x = createFilm()
     console.log(x);

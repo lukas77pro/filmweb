@@ -29,8 +29,8 @@
 
     <div class="row" ng-show="state=='filmadd'">
         <h2>Dodaj nowy film:</h2>
-        <form class="form-horizontal" role="form">
 
+        <form class="form-horizontal" role="form" ng-submit="pushFilm()">
             <div class="form-group">
                 <label class="control-label col-sm-4" for="nazwaFilmu">Nazwa filmu
                     <span class="required">*</span>
@@ -80,14 +80,17 @@
                     <span class="required">*</span>
                 </label>
                 <div class="col-sm-6">
-                     <select class="form-control" id="produkcjaFilmu"
+                     <select class="form-control ng-dirty" id="produkcjaFilmu"
                         ng-model="items.country"
                         ng-options="country.nazwa for country in countries | orderBy:'nazwa'"
                         ng-change="addCountryToNewFilm()">
                      </select>
-                    <div class="btn" ng-click="deleteCountryFromNewFilm($index)"
+                    <div class="btn" ng-click="deleteCountryFromNewFilm($index)" ng-show="nowyFilm.produkcja.length>0"
                         ng-repeat="country in nowyFilm.produkcja">
                             {{ country.nazwa }} <b>X</b>
+                    </div>
+                    <div ng-show="nowyFilm.produkcja.length==0">
+                        <span class="error"><code>Wybierz przynajmniej jeden kraj</code></span>
                     </div>
                 </div>
             </div>
@@ -102,10 +105,15 @@
                         ng-options="genre.nazwa for genre in genres | orderBy:'nazwa'"
                         ng-change="addGenreToNewFilm()">
                      </select>
-                    <div class="btn" ng-click="deleteGenreFromNewFilm($index)"
+
+                    <div class="btn" ng-click="deleteGenreFromNewFilm($index)" ng-show="nowyFilm.gatunki.length>0"
                         ng-repeat="genre in nowyFilm.gatunki">
                             {{ genre.nazwa }} <b>X</b>
                     </div>
+                    <div ng-show="nowyFilm.gatunki.length==0">
+                        <span class="error"><code>Wybierz przynajmniej jeden gatunek</code></span>
+                    </div>
+
                 </div>
             </div>
 
