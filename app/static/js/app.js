@@ -12,7 +12,7 @@ app.controller('controller', ['$scope', '$http', function($scope, $http) {
             data_premiery : null,
             data_premiery_polska : null,
             budzet : null,
-            opis : null,
+            opis : '',
             ocena : null,
             ilosc_ocen : null,
             produkcja : [],
@@ -83,9 +83,16 @@ app.controller('controller', ['$scope', '$http', function($scope, $http) {
         return false
     };
 
+
     $scope.pushFilm = function() {
         if ($scope.validAddFilmForm()) {
-            console.log('VALID')
+            $http({
+              method: 'POST',
+              url: '/api/film',
+              data: $scope.nowyFilm
+            }).then(function successCallback(response) {
+                console.log('wyslano film')
+            });
         }
 
     };
@@ -111,7 +118,7 @@ app.controller('controller', ['$scope', '$http', function($scope, $http) {
             }
           }, function errorCallback(response) {
             console.log('Load countries error!')
-          });
+        });
     };
 
     $scope.loadGenres = function() {
