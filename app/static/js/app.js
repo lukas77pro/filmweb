@@ -1,5 +1,87 @@
 var app = angular.module('app', []);
-app.controller('controller', function($scope, $http) {
+app.controller('controller', ['$scope', '$http', function($scope, $http) {
+
+    // ========== FACTORY ============
+    var createFilm = function() {
+        return {
+            id : null,
+            nazwa : null,
+            nazwa_oryginalna : null,
+            czas_trwania : null,
+            rok_produkcji : null,
+            data_premiery : null,
+            data_premiery_polska : null,
+            budzet : null,
+            opis : null,
+            ocena : null,
+            ilosc_ocen : null,
+            produkcja : [],
+            gatunki : []
+        }
+    };
+
+    var createCountry = function() {
+        return {
+            id : null,
+            nazwa : ''
+        }
+    };
+
+    var createGenre = function() {
+        return {
+            id : null,
+            nazwa : ''
+        }
+    };
+
+    var createProfession = function() {
+        return {
+            id : null,
+            nazwa : ''
+        }
+    };
+    // ===============================
+
+    // ======= DODAWANIE FILMU =======
+    $scope.addFilm = function() {
+        $scope.state = 'filmadd'
+        $scope.nowyFilm = createFilm()
+    };
+
+    // DODAWANIE KRAJÓW PRODUKCJI
+    $scope.addGenreToNewFilm = function() {
+        gatunki = $scope.nowyFilm.gatunki
+        szukany = $scope.items.genre
+        if (gatunki.indexOf(szukany) == -1) {
+            gatunki.push(szukany)
+        }
+    };
+    $scope.deleteGenreFromNewFilm = function(index) {
+        $scope.nowyFilm.gatunki.splice(index, 1)
+    };
+
+
+    // DODAWNIA KRAJÓW PRODUKCJI
+    $scope.addCountryToNewFilm = function() {
+        kraje = $scope.nowyFilm.produkcja
+        szukany = $scope.items.country
+        if (kraje.indexOf(szukany) == -1) {
+            kraje.push(szukany)
+        }
+    };
+    $scope.deleteCountryFromNewFilm = function(index) {
+        $scope.nowyFilm.produkcja.splice(index, 1)
+    };
+
+    $scope.pushFilm = function() {
+        console.log('send')
+    }
+
+
+    $scope.info = function(arg) {
+        console.log(arg)
+    }
+    // ===============================
 
     $scope.loadCountries = function() {
         $scope.countries = []
@@ -9,9 +91,11 @@ app.controller('controller', function($scope, $http) {
         }).then(function successCallback(response) {
             c = response.data
             for (var i = 0; i < c.length; i++) {
-                $scope.countries.push(c[i].fields.nazwa)
+                con = createCountry()
+                con.id = c[i].pk
+                con.nazwa = c[i].fields.nazwa
+                $scope.countries.push(con)
             }
-            console.log(response)
           }, function errorCallback(response) {
             console.log('Load countries error!')
           });
@@ -23,11 +107,13 @@ app.controller('controller', function($scope, $http) {
           method: 'GET',
           url: '/api/genres'
         }).then(function successCallback(response) {
-            c = response.data
-            for (var i = 0; i < c.length; i++) {
-                $scope.genres.push(c[i].fields.nazwa)
+            g = response.data
+            for (var i = 0; i < g.length; i++) {
+                gen = createGenre()
+                gen.id = g[i].pk
+                gen.nazwa = g[i].fields.nazwa
+                $scope.genres.push(gen)
             }
-            console.log(response)
           }, function errorCallback(response) {
             console.log('Load genres error!')
           });
@@ -39,11 +125,13 @@ app.controller('controller', function($scope, $http) {
           method: 'GET',
           url: '/api/professions'
         }).then(function successCallback(response) {
-            c = response.data
-            for (var i = 0; i < c.length; i++) {
-                $scope.professions.push(c[i].fields.nazwa)
+            p = response.data
+            for (var i = 0; i < p.length; i++) {
+                pro = createProfession()
+                pro.id = p[i].pk
+                pro.nazwa = p[i].fields.nazwa
+                $scope.professions.push(pro)
             }
-            console.log(response)
           }, function errorCallback(response) {
             console.log('Load countries error!')
           });
@@ -64,7 +152,8 @@ app.controller('controller', function($scope, $http) {
             films : []
         }
     };
-
+    x = createFilm()
+    console.log(x);
     $scope.init();
 
-});
+}]);

@@ -2,3 +2,18 @@
     font-size: 200%;
     margin-bottom: 20px;
 }
+
+.radius {
+    border-radius: 2px;
+}
+
+.main {
+    margin-top: 0px;
+    margin-right: 10%;
+    margin-bottom: 0px;
+    margin-left: 10%;
+}
+
+.required {
+    color: red;
+}
