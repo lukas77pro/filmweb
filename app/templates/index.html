@@ -13,29 +13,36 @@
 <div class="main" ng-controller="controller">
     <div class="row panel panel-default panel-body">
         <div class="col-xs-12"
-            ng-click="state='main'">
+             ng-click="goMain()">
             <h1>FILMWEB</h1>
         </div>
     </div>
 
 
     <div class="row panel panel-default panel-body" ng-show="state=='main'">
-        <div class="col-xs-12">
-            <input placeholder="Podaj tytuł filmu..." ng-model="searchfilm.name">
+        <div class="col-xs-8">
+            <input class="form-control" placeholder="Szukaj..." ng-model="items.filmsearch.name"
+                   ng-change="findFilms()"/>
+            <div ng-repeat="film in items.filmsearch.films | limitTo : 10">
+                <button class="btn-block" ng-click="viewFilm($index)">
+                    <b>{{ film.nazwa }}</b></br>{{ film.nazwa_oryginalna}}
+                </button>
+            </div>
         </div>
-        <div class="row">
-            <button ng-click="addFilm()">Dodaj film</button>
-            <button ng-click="addPerson()">Dodaj osobę</button>
+        <div class="col-xs-4">
+            <button class="form-control" ng-click="addFilm()">Dodaj film</button>
+            <button class="form-control" ng-click="addPerson()">Dodaj osobę</button>
+
         </div>
     </div>
 
 
-
-
-    <div class="row" ng-show="state=='filmadd'">
-        <h2>Dodaj nowy film:</h2>
+    <div class="row panel panel-default panel-body" ng-show="state=='filmadd'">
 
         <form class="form-horizontal" role="form" ng-submit="pushFilm()">
+
+            <h2>Dodaj nowy film:</h2>
+
             <div class="form-group">
                 <label class="control-label col-sm-4" for="nazwaFilmu">Nazwa filmu
                     <span class="required">*</span>
@@ -85,14 +92,14 @@
                     <span class="required">*</span>
                 </label>
                 <div class="col-sm-6">
-                     <select class="form-control ng-dirty" id="produkcjaFilmu"
-                        ng-model="items.country"
-                        ng-options="country.nazwa for country in countries | orderBy:'nazwa'"
-                        ng-change="addCountryToNewFilm()">
-                     </select>
+                    <select class="form-control ng-dirty" id="produkcjaFilmu"
+                            ng-model="items.country"
+                            ng-options="country.nazwa for country in countries | orderBy:'nazwa'"
+                            ng-change="addCountryToNewFilm()">
+                    </select>
                     <div class="btn" ng-click="deleteCountryFromNewFilm($index)" ng-show="nowyFilm.produkcja.length>0"
-                        ng-repeat="country in nowyFilm.produkcja">
-                            {{ country.nazwa }} <b>X</b>
+                         ng-repeat="country in nowyFilm.produkcja">
+                        {{ country.nazwa }} <b>X</b>
                     </div>
                     <div ng-show="nowyFilm.produkcja.length==0">
                         <span class="error"><code>Wybierz przynajmniej jeden kraj</code></span>
@@ -105,15 +112,15 @@
                     <span class="required">*</span>
                 </label>
                 <div class="col-sm-6">
-                     <select class="form-control" id="gatunkiFilmu"
-                        ng-model="items.genre"
-                        ng-options="genre.nazwa for genre in genres | orderBy:'nazwa'"
-                        ng-change="addGenreToNewFilm()">
-                     </select>
+                    <select class="form-control" id="gatunkiFilmu"
+                            ng-model="items.genre"
+                            ng-options="genre.nazwa for genre in genres | orderBy:'nazwa'"
+                            ng-change="addGenreToNewFilm()">
+                    </select>
 
                     <div class="btn" ng-click="deleteGenreFromNewFilm($index)" ng-show="nowyFilm.gatunki.length>0"
-                        ng-repeat="genre in nowyFilm.gatunki">
-                            {{ genre.nazwa }} <b>X</b>
+                         ng-repeat="genre in nowyFilm.gatunki">
+                        {{ genre.nazwa }} <b>X</b>
                     </div>
                     <div ng-show="nowyFilm.gatunki.length==0">
                         <span class="error"><code>Wybierz przynajmniej jeden gatunek</code></span>
@@ -142,10 +149,13 @@
                 <label class="control-label col-sm-4" for="opisFilmu"> Opis filmu </label>
                 <div class="col-sm-6">
                     <textarea class="form-control" ng-model="nowyFilm.opis" id="opisFilmu"
-                        placeholder="Wprowadź opis filmu...">
+                              placeholder="Wprowadź opis filmu...">
                     </textarea>
                 </div>
             </div>
+
+            <h2>Dodaj obsadę:</h2>
+
 
             <div class="form-group">
                 <div class="col-sm-4 pull-right" class="btn">
@@ -157,8 +167,7 @@
     </div>
 
 
-
-    <div class="row" ng-show="state=='personadd'">
+    <div class="row panel panel-default panel-body" ng-show="state=='personadd'">
         <h2>Dodaj nową osobę:</h2>
 
         <form class="form-horizontal" role="form" ng-submit="pushPerson()">
@@ -204,10 +213,10 @@
             <div class="form-group">
                 <label class="control-label col-sm-4" for="krajOsoby"> Kraj </label>
                 <div class="col-sm-6">
-                     <select class="form-control ng-dirty" id="krajOsoby"
-                        ng-model="nowaOsoba.kraj_urodzenia"
-                        ng-options="country.nazwa for country in countries | orderBy:'nazwa'">
-                     </select>
+                    <select class="form-control ng-dirty" id="krajOsoby"
+                            ng-model="nowaOsoba.kraj_urodzenia"
+                            ng-options="country.nazwa for country in countries | orderBy:'nazwa'">
+                    </select>
                 </div>
             </div>
 
@@ -223,7 +232,7 @@
                 <label class="control-label col-sm-4" for="biografiaOsoby"> Biografia </label>
                 <div class="col-sm-6">
                     <textarea class="form-control" ng-model="nowaOsoba.biografia" id="biografiaOsoby"
-                        placeholder="Wprowadź biografię osoby...">
+                              placeholder="Wprowadź biografię osoby...">
                     </textarea>
                 </div>
             </div>
@@ -238,8 +247,6 @@
     </div>
 
 
-
-
     <div class="row" ng-show="state=='filmview'">
         witam
     </div>
@@ -247,6 +254,27 @@
     <div class="row" ng-show="state=='filmedit'">
         witam
     </div>
+
+
+    <div class="modal fade in" role="dialog" ng-show="items.modal.show"
+         style="display: block">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">{{ items.modal.header }}</h4>
+                </div>
+                <div class="modal-body">
+                    <p>{{ items.modal.body }}</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="hideModal()">
+                        {{ items.modal.footer }}
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>
 {% endverbatim %}
 </body>

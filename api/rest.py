@@ -72,11 +72,13 @@ def person_post(request): # Zapisz silm
     nowaOsoba.data_urodzenia        = convertFromJsonToDate(personData['data_urodzenia'])
     nowaOsoba.data_smierci          = convertFromJsonToDate(personData['data_smierci'])
 
-    kraj =  Kraj.objects.get(pk=personData['kraj_urodzenia']['id'])
-    nowaOsoba.kraj_urodzenia = kraj
+    krajData = personData['kraj_urodzenia']
+    if krajData:
+        kraj =  Kraj.objects.get(pk=krajData['id'])
+        nowaOsoba.kraj_urodzenia = kraj
 
     nowaOsoba.save()
-    
+
     return HttpResponse("OK")
 # ====================================
 
@@ -109,11 +111,21 @@ def film_get(request): # Wszystkie filmy
         filmy_zgodne = []
         for film in filmy:  # wyszukiwanie jesli nazwa zaczyna się na name
             found = False
-            for partname in film.nazwa.split(): # przeszukaj kazdy fragmetn tytulu
-                if partname.lower().startswith(name.lower()):
+            if film.nazwa.lower().startswith(name.lower()):
+                filmy_zgodne.append(film)
+                found = True
+
+            if not found:
+                if film.nazwa_oryginalna.lower().startswith(name.lower()):
                     filmy_zgodne.append(film)
                     found = True
-                    break
+
+            if not found:
+                for partname in film.nazwa.split(): # przeszukaj kazdy fragmetn tytulu
+                    if partname.lower().startswith(name.lower()):
+                        filmy_zgodne.append(film)
+                        found = True
+                        break
 
             if not found:   # przeszukaj kazdy fragmetn tytulu oryginalnego
                 for partname in film.nazwa_oryginalna.split():
