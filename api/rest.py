@@ -10,7 +10,79 @@ def user(request):
     print('user')
     pass
 
+# ============ OSOBA ==================
+@csrf_exempt
+def person(request):
+    methods = {
+        "GET" : person_get,
+        "POST" : person_post,
+    }
+    method = methods.get(request.method)
+    return method(request)
 
+def person_get(request): # Wszystkie filmy
+    # name = request.GET.get('name', '')  # pobranie parametru .../film?name=... domyslna wartosc -> ''
+    # count = request.GET.get('count', '')   # pobranie parametru .../film?count=... domyslna wartosc -> ''
+    # order_by = request.GET.get('order_by', '')   # pobranie parametru .../film?orderby=... domyslna wartosc -> ''
+    # direction = request.GET.get('direction', 'asc')   # pobranie parametru .../film?orderby=... domyslna wartosc -> ''
+    #
+    # if order_by:
+    #     if direction == 'desc':
+    #         order_by = '-' + order_by
+    #     filmy = Film.objects.order_by(order_by)
+    # else:
+    #     filmy = Film.objects.all()
+    #
+    # if name:    # wyszukiwanie wg nazwy
+    #     filmy_zgodne = []
+    #     for film in filmy:  # wyszukiwanie jesli nazwa zaczyna się na name
+    #         found = False
+    #         for partname in film.nazwa.split(): # przeszukaj kazdy fragmetn tytulu
+    #             if partname.lower().startswith(name.lower()):
+    #                 filmy_zgodne.append(film)
+    #                 found = True
+    #                 break
+    #
+    #         if not found:   # przeszukaj kazdy fragmetn tytulu oryginalnego
+    #             for partname in film.nazwa_oryginalna.split():
+    #                 if partname.lower().startswith(name.lower()):
+    #                     filmy_zgodne.append(film)
+    #                     found = True
+    #                     break
+    #
+    #     filmy = filmy_zgodne
+    #
+    # if count:   # zwrocene okreslonej ilosci filmow
+    #     filmy = filmy[:int(count)]
+    osoby = Osoba.objects.all()
+
+    osoby_ser = serializers.serialize('json', osoby)    # serializacja do json, zwraca string
+    data = json.loads(osoby_ser)    # zamienia string na jsona
+    return HttpResponse(json.dumps(data))
+
+
+def person_post(request): # Zapisz silm
+    personData = json.loads(request.body.decode('utf-8'))
+
+    nowaOsoba = Osoba()
+    nowaOsoba.imie                  = personData['imie']
+    nowaOsoba.nazwisko              = personData['nazwisko']
+    nowaOsoba.wzrost                = personData['wzrost']
+    nowaOsoba.biografia             = personData['biografia']
+    nowaOsoba.data_urodzenia        = convertFromJsonToDate(personData['data_urodzenia'])
+    nowaOsoba.data_smierci          = convertFromJsonToDate(personData['data_smierci'])
+
+    kraj =  Kraj.objects.get(pk=personData['kraj_urodzenia']['id'])
+    nowaOsoba.kraj_urodzenia = kraj
+
+    nowaOsoba.save()
+    
+    return HttpResponse("OK")
+# ====================================
+
+
+
+# ============ FILM ==================
 @csrf_exempt
 def film(request):
     methods = {
@@ -62,7 +134,6 @@ def film_get(request): # Wszystkie filmy
 
 def film_post(request): # Zapisz silm
     filmData = json.loads(request.body.decode('utf-8'))
-    print(filmData)
 
     nowyFilm = Film()
     nowyFilm.nazwa                  = filmData['nazwa']
@@ -84,7 +155,7 @@ def film_post(request): # Zapisz silm
         nowyFilm.produkcja.add(kraj)
 
     return HttpResponse("OK")
-
+# ====================================
 
 def convertFromJsonToDate(json):
     if (json is not None):

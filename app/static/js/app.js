@@ -2,6 +2,22 @@ var app = angular.module('app', []);
 app.controller('controller', ['$scope', '$http', function($scope, $http) {
 
     // ========== FACTORY ============
+    var createPerson = function() {
+        return {
+            id : null,
+            imie : '',
+            nazwisko : '',
+            data_urodzenia : null,
+            data_smierci : null,
+            biografia : '',
+            wzrost : null,
+            kraj_urodzenia : null,
+            ocena : null,
+            ilosc_ocen : null
+        }
+    };
+
+
     var createFilm = function() {
         return {
             id : null,
@@ -41,6 +57,25 @@ app.controller('controller', ['$scope', '$http', function($scope, $http) {
         }
     };
     // ===============================
+
+
+    // ======= DODAWANIE OSOBY =======
+    $scope.addPerson = function() {
+        $scope.state = 'personadd'
+        $scope.nowaOsoba = createPerson()
+    };
+
+    $scope.pushPerson = function() {
+        $http({
+              method: 'POST',
+              url: '/api/person',
+              data: $scope.nowaOsoba
+        }).then(function successCallback(response) {
+            console.log('dodano osobe')
+        });
+    };
+    // ===============================
+
 
     // ======= DODAWANIE FILMU =======
     $scope.addFilm = function() {
@@ -94,7 +129,46 @@ app.controller('controller', ['$scope', '$http', function($scope, $http) {
                 console.log('wyslano film')
             });
         }
+    };
 
+
+    $scope.info = function(arg) {
+        console.log(arg)
+    };
+    // ===============================
+
+    // DODAWNIA KRAJÓW PRODUKCJI
+    $scope.addCountryToNewFilm = function() {
+        kraje = $scope.nowyFilm.produkcja
+        szukany = $scope.items.country
+        if (kraje.indexOf(szukany) == -1) {
+            kraje.push(szukany)
+        }
+        $scope.items.country = ''
+    };
+    $scope.deleteCountryFromNewFilm = function(index) {
+        $scope.nowyFilm.produkcja.splice(index, 1)
+    };
+
+    $scope.validAddFilmForm = function() {
+        if ($scope.nowyFilm.gatunki.length > 0 &&
+            $scope.nowyFilm.produkcja.length > 0) {
+            return true
+        }
+        return false
+    };
+
+
+    $scope.pushFilm = function() {
+        if ($scope.validAddFilmForm()) {
+            $http({
+              method: 'POST',
+              url: '/api/film',
+              data: $scope.nowyFilm
+            }).then(function successCallback(response) {
+                console.log('wyslano film')
+            });
+        }
     };
 
 

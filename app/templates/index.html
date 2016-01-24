@@ -22,9 +22,14 @@
     <div class="row panel panel-default panel-body" ng-show="state=='main'">
         <div class="col-xs-12">
             <input placeholder="Podaj tytuł filmu..." ng-model="searchfilm.name">
-            <button ng-click="addFilm()">Dodaj filmu</button>
+        </div>
+        <div class="row">
+            <button ng-click="addFilm()">Dodaj film</button>
+            <button ng-click="addPerson()">Dodaj osobę</button>
         </div>
     </div>
+
+
 
 
     <div class="row" ng-show="state=='filmadd'">
@@ -121,7 +126,7 @@
                 <label class="control-label col-sm-4" for="premieraFilmu"> Data premiery </label>
                 <div class="col-sm-6">
                     <input type="date" ng-model="nowyFilm.data_premiery" id="premieraFilmu"
-                           class="form-control" value="2015-11-30"/>
+                           class="form-control"/>
                 </div>
             </div>
 
@@ -143,13 +148,96 @@
             </div>
 
             <div class="form-group">
-                <div class="col-sm-4 pull-right" class="submit btn">
-                    <input type="submit" id="submitFilm" value="Dodaj film"
+                <div class="col-sm-4 pull-right" class="btn">
+                    <input type="submit" value="Dodaj film"
                            class="form-control" ng-click="info(nowyFilm)"/>
                 </div>
             </div>
         </form>
     </div>
+
+
+
+    <div class="row" ng-show="state=='personadd'">
+        <h2>Dodaj nową osobę:</h2>
+
+        <form class="form-horizontal" role="form" ng-submit="pushPerson()">
+
+            <div class="form-group">
+                <label class="control-label col-sm-4" for="imieOsoby">Imię osoby
+                    <span class="required">*</span>
+                </label>
+                <div class="col-sm-6">
+                    <input type="text" ng-model="nowaOsoba.imie" id="imieOsoby" maxlength="50" required
+                           class="form-control" placeholder="Podaj imię osoby..."/>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-sm-4" for="nazwiskoOsoby">Nazwisko osoby
+                    <span class="required">*</span>
+                </label>
+                <div class="col-sm-6">
+                    <input type="text" ng-model="nowaOsoba.nazwisko" id="nazwiskoOsoby" maxlength="50" required
+                           class="form-control" placeholder="Podaj nazwisko osoby..."/>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-sm-4" for="dataUrodzenia"> Data urodzenia
+                    <span class="required">*</span>
+                </label>
+                <div class="col-sm-6">
+                    <input type="date" ng-model="nowaOsoba.data_urodzenia" id="dataUrodzenia" required
+                           class="form-control"/>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-sm-4" for="dataSmierci"> Data śmierci </label>
+                <div class="col-sm-6">
+                    <input type="date" ng-model="nowaOsoba.data_smierci" id="dataSmierci"
+                           class="form-control"/>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-sm-4" for="krajOsoby"> Kraj </label>
+                <div class="col-sm-6">
+                     <select class="form-control ng-dirty" id="krajOsoby"
+                        ng-model="nowaOsoba.kraj_urodzenia"
+                        ng-options="country.nazwa for country in countries | orderBy:'nazwa'">
+                     </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-sm-4" for="wzrostOsoby"> Wzrost(cm) </label>
+                <div class="col-sm-6">
+                    <input type="number" min="0" ng-model="nowaOsoba.wzrost" id="wzrostOsoby"
+                           class="form-control" placeholder="Podaj wzrost osoby..."/>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-sm-4" for="biografiaOsoby"> Biografia </label>
+                <div class="col-sm-6">
+                    <textarea class="form-control" ng-model="nowaOsoba.biografia" id="biografiaOsoby"
+                        placeholder="Wprowadź biografię osoby...">
+                    </textarea>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-sm-4 pull-right" class="btn">
+                    <input type="submit" value="Dodaj osobę"
+                           class="form-control" ng-click="info(nowaOsoba)"/>
+                </div>
+            </div>
+        </form>
+    </div>
+
+
 
 
     <div class="row" ng-show="state=='filmview'">

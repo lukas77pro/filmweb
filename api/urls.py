@@ -8,4 +8,5 @@ urlpatterns = [
     url(r'^genres', rest.genres),
     url(r'^user$', rest.user),
     url(r'^film$', rest.film),
+    url(r'^person$', rest.person),
 ]
